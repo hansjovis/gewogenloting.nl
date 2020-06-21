@@ -279,11 +279,21 @@ class Participants {
     updateList() {
         let retStr = "";
         this.list.forEach(participant => {
-            let delHtml = "<span class=\"operation\" onclick=\"Main.DelUnit('" + participant.id + "')\">" +
-                "&#10060;</span>";
-            if (retStr.length < 1)
-                retStr = "<div class=\"parttable\"><table><tr><th>id:</th><td>" + participant.id + "</td></tr><tr><th>kans:</th><td>" + participant.chance + "</td></tr><tr><th>actie:</th><td>" + delHtml + "</td></tr></table></div>";
-            else retStr += "<div class=\"parttable\"><table><tr><td>" + participant.id + "</td></tr><tr><td>" + participant.chance + "</td></tr><tr><td>" + delHtml + "</td></tr></table></div>";
+            let delHtml = `<button class="operation" onclick="Main.DelUnit('${participant.id}')">&#10060;</button>`;
+            if (retStr.length < 1) {
+                retStr = `<li>
+                    <span>id:</span>    <span>${participant.id}</span>
+                    <span>kans:</span>  <span>${participant.chance}</span>
+                    <span>actie:</span> <span>${delHtml}</span>
+                </li>`;
+            }
+            else {
+                retStr += `<li>
+                    <span class="visually-hidden">id:</span>    <span>${participant.id}</span>
+                    <span class="visually-hidden">kans:</span>  <span>${participant.chance}</span>
+                    <span class="visually-hidden">actie:</span> <span>${delHtml}</span>
+                </li>`;
+            }
         });
         getDivElement("participantsList").innerHTML = retStr;;
     }

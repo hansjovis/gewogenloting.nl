@@ -52,6 +52,7 @@ var Main = /** @class */ (function () {
         this.refresh();
     };
     Main.prototype.refresh = function () {
+        console.log('refreshing');
         /* Check for new settings. */
         this.updateInputFields();
         /* Update participations list. */
@@ -87,12 +88,12 @@ var Lots = /** @class */ (function () {
     ;
     Object.defineProperty(Lots, "I", {
         get: function () { return this.Instance; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Lots.prototype, "lotsRequired", {
         get: function () { return Math.pow(this.lotsBase, this.lotsMultiplier); },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Lots.prototype, "totalSpaceCount", {
@@ -108,7 +109,7 @@ var Lots = /** @class */ (function () {
             });
             return totalSpaces;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /** When 'exponent' value is > 1, we want to split the lot numbers/identifiers up,
@@ -179,7 +180,7 @@ var Participants = /** @class */ (function () {
     ;
     Object.defineProperty(Participants, "I", {
         get: function () { return this.Instance; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Participants.prototype, "poolSpace", {
@@ -191,7 +192,7 @@ var Participants = /** @class */ (function () {
             }
             return space;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Participants.prototype, "poolParts", {
@@ -205,7 +206,7 @@ var Participants = /** @class */ (function () {
             }
             return parts;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Participants.prototype.idExists = function (id) {
@@ -269,12 +270,13 @@ var Participants = /** @class */ (function () {
     Participants.prototype.updateList = function () {
         var retStr = "";
         this.list.forEach(function (participant) {
-            var delHtml = "<span class=\"operation\" onclick=\"Main.DelUnit('" + participant.id + "')\">" +
-                "&#10060;</span>";
-            if (retStr.length < 1)
-                retStr = "<div class=\"parttable\"><table><tr><th>id:</th><td>" + participant.id + "</td></tr><tr><th>kans:</th><td>" + participant.chance + "</td></tr><tr><th>actie:</th><td>" + delHtml + "</td></tr></table></div>";
-            else
-                retStr += "<div class=\"parttable\"><table><tr><td>" + participant.id + "</td></tr><tr><td>" + participant.chance + "</td></tr><tr><td>" + delHtml + "</td></tr></table></div>";
+            var delHtml = "<button class=\"operation\" onclick=\"Main.DelUnit('" + participant.id + "')\">&#10060;</button>";
+            if (retStr.length < 1) {
+                retStr = "<li class=\"parttable\">\n                    <span>id:</span>    <span>" + participant.id + "</span>\n                    <span>kans:</span>  <span>" + participant.chance + "</span>\n                    <span>actie:</span> <span>" + delHtml + "</span>\n                </li>";
+            }
+            else {
+                retStr += "<li class=\"parttable\">\n                    <span class=\"visually-hidden\">id:</span>    <span>" + participant.id + "</span>\n                    <span class=\"visually-hidden\">kans:</span>  <span>" + participant.chance + "</span>\n                    <span class=\"visually-hidden\">actie:</span> <span>" + delHtml + "</span>\n                </li>";
+            }
         });
         getDivElement("participantsList").innerHTML = retStr;
         ;
@@ -484,7 +486,7 @@ var Lot = /** @class */ (function () {
         get: function () {
             return this.spaces.length < this.spaceCount;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Lot.prototype.toString = function () {
